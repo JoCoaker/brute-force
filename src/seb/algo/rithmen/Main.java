@@ -2,14 +2,15 @@ package seb.algo.rithmen;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Line2D;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
 public class Main extends JFrame {
 
-    ArrayList<Ways[]> success = new ArrayList<>();
+    ArrayList<ArrayList<Ways[]>> success = new ArrayList<>();
 
-    int width = 500;
+    int width = 200;
 
     enum Ways {
         RIGHT,
@@ -19,19 +20,22 @@ public class Main extends JFrame {
     }
 
     public Main() {
-        setSize(500, 500);
+        setSize(1000, 500);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
-        goThrough(5);
+        for (int i = 1; i <= 7; i++) {
+            goThrough(i);
+        }
     }
 
     public void goThrough(int n) {
+        ArrayList<Ways[]> success = new ArrayList<>();
         BigInteger posibilitys = new BigInteger("4");
         posibilitys = posibilitys.pow(2 * n);
         //BigInteger posibilitys = new BigInteger(Math.BigInteger.pow(4, (2*n)));
-        System.out.println(posibilitys.longValue());
+//        System.out.println(posibilitys.longValue());
         Ways[] w = new Ways[2 * n];
 
         for (int i = 0; i < w.length; i++) {
@@ -95,48 +99,68 @@ public class Main extends JFrame {
             }
         }
 
-
-        System.out.println(success.size());
+        this.success.add(success);
+        System.out.println("n=" + n + " Moegliche Pfade: " + success.size());
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);  // fixes the immediate problem.
-
+//
         Graphics2D g2 = (Graphics2D) g;
-        int step =  (width - 10) / success.get(0).length;
-
-//        for (int i = 0; i < success.size(); i++) {
-//            Ways[] w = success.get(i);
 //
-//            int x = 10;
-//            int y = width - 10;
-//            int offsetX = 10;
-//            int offsetY = width - 10;
-//
-//            for (int j = 0; j < w.length; j++) {
-//                Line2D lin = null;
-//                switch (w[j]) {
-//                    case RIGHT:
-//                        offsetX += step;
-//                        break;
-//                    case DOWN:
-//                        offsetY += step;
-//                        break;
-//                    case UP:
-//                        offsetY -= step;
-//                        break;
-//                    case UP_LEFT:
-//                        offsetY -= step;
-//                        offsetX -= step;
-//                        break;
-//                }
-//                    lin = new Line2D.Float(x, y, offsetX, offsetY);
-//                    g2.draw(lin);
-//                    x = offsetX;
-//                    y = offsetY;
+//        for(int i = 1; i <= success.size(); i++) {
+//            if (success.get(i - 1) == null) {
+//                Line2D lin = new Line2D.Float(i * step, 250, i * step, 275);
+//                g2.draw(lin);
+//            }else {
+//                Line2D lin = new Line2D.Float(i * step, 250, i * step , 350);
+//                g2.draw(lin);
 //            }
 //        }
+        int right = 0;
+
+        for(int p = 0; p < success.size(); p++) {
+            int step =  (width - 10) / success.get(p).get(0).length;
+
+            int startX = step * success.get(0).get(0).length + 10 + right;
+            int startY = 500;
+
+            for (int i = 0; i < success.get(p).size(); i++) {
+                Ways[] w = success.get(p).get(i);
+
+                int x = startX;
+                int y = startY;
+
+                int offsetX = x;
+                int offsetY = y;
+
+                for (int j = 0; j < w.length; j++) {
+                    Line2D lin = null;
+                    switch (w[j]) {
+                        case RIGHT:
+                            offsetX += step;
+                            break;
+                        case DOWN:
+                            offsetY += step;
+                            break;
+                        case UP:
+                            offsetY -= step;
+                            break;
+                        case UP_LEFT:
+                            offsetY -= step;
+                            offsetX -= step;
+                            break;
+                    }
+                    lin = new Line2D.Float(x, y, offsetX, offsetY);
+                    g2.draw(lin);
+                    x = offsetX;
+                    y = offsetY;
+                }
+            }
+
+            right += width + 15;
+        }
     }
 
 
