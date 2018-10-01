@@ -5,10 +5,13 @@ import java.awt.*;
 import java.awt.geom.Line2D;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Main extends JFrame {
 
     ArrayList<ArrayList<Ways[]>> success = new ArrayList<>();
+
+    int[][][] sets;
 
     int width = 200;
 
@@ -20,14 +23,40 @@ public class Main extends JFrame {
     }
 
     public Main() {
-        setSize(1000, 500);
-        setVisible(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        setSize(1000, 500);
+//        setVisible(true);
+//        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
-        for (int i = 1; i <= 7; i++) {
-            goThrough(i);
+        for (int i = 1; i <= 5; i++) {
+//            sets = new int[i*2][i*2][1];
+            BigInteger t = walk(0, 0 , i*2, i);
+            System.out.println("n=" + i + " Moegliche Pfade: " + t);
         }
+    }
+
+    public BigInteger walk(int x, int y, int step, int n) {
+        if (x < 0 || y < 0) {
+            return BigInteger.ZERO;
+        }
+        if (step == 0) {
+            if(x == 0 && y == n) {
+                return BigInteger.ONE;
+            }
+            return BigInteger.ZERO;
+        }
+        if (x > n) {
+            return BigInteger.ZERO;
+        }
+        if (y > n + (n * 2.0)) {
+            return BigInteger.ZERO;
+        }
+        step--;
+
+        return walk(x + 1, y, step, n)
+                .add(walk(x, y + 1, step, n))
+                .add(walk(x, y - 1, step, n))
+                .add(walk(x - 1, y + 1, step, n));
     }
 
     public void goThrough(int n) {
