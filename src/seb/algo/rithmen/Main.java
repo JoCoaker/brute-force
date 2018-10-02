@@ -30,7 +30,7 @@ public class Main extends JFrame {
 
 
         BigInteger before = BigInteger.ZERO;
-        for (int i = 1; i <= 9; i++) {
+        for (int i = 1; i <= 11; i++) {
             BigInteger t = walk(0, 0 , i*2, i);
 //            System.out.println("n=" + i + " : " + t.add(before));
             System.out.println("n=" + i + " : " + t);
@@ -51,9 +51,9 @@ public class Main extends JFrame {
         if (x > n) {
             return BigInteger.ZERO;
         }
-//        if (step < (n - y)) {
-//            return BigInteger.ZERO;
-//        }
+        if (step < (n - y)) {
+            return BigInteger.ZERO;
+        }
 //        if (!check(x, y, step, n)) {
 //            return BigInteger.ZERO;
 //        }
@@ -69,7 +69,6 @@ public class Main extends JFrame {
         if (x > 0) {
             step -= x;
             y += x;
-            x = 0;
         }
 
         while (y > n) {
@@ -80,13 +79,11 @@ public class Main extends JFrame {
             step--;
             y++;
         }
-        while (step > 3) {
-            step -= 2;
+        if ((step%2==0 || step%3==0) && step >= 0) {
+            return true;
+
         }
-        if (step==1 || step < 0) {
-            return false;
-        }
-        return true;
+        return false;
     }
 
     public void goThrough(int n) {
