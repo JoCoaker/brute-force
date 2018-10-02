@@ -51,15 +51,42 @@ public class Main extends JFrame {
         if (x > n) {
             return BigInteger.ZERO;
         }
-        if (step < (n - y)) {
-            return BigInteger.ZERO;
-        }
+//        if (step < (n - y)) {
+//            return BigInteger.ZERO;
+//        }
+//        if (!check(x, y, step, n)) {
+//            return BigInteger.ZERO;
+//        }
         step--;
 
         return walk(x + 1, y, step, n)
                 .add(walk(x, y + 1, step, n))
                 .add(walk(x, y - 1, step, n))
                 .add(walk(x - 1, y + 1, step, n));
+    }
+
+    public boolean check(int x, int y, int step, int n) {
+        if (x > 0) {
+            step -= x;
+            y += x;
+            x = 0;
+        }
+
+        while (y > n) {
+            step--;
+            y--;
+        }
+        while (y < n) {
+            step--;
+            y++;
+        }
+        while (step > 3) {
+            step -= 2;
+        }
+        if (step==1 || step < 0) {
+            return false;
+        }
+        return true;
     }
 
     public void goThrough(int n) {
