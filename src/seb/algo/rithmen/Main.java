@@ -11,8 +11,9 @@ public class Main extends JFrame {
 
     ArrayList<ArrayList<Ways[]>> success = new ArrayList<>();
 
-    int[][][] sets;
+    int[][] sets;
 
+    BigInteger wege=BigInteger.ZERO;
     int width = 200;
 
     enum Ways {
@@ -28,10 +29,12 @@ public class Main extends JFrame {
 //        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
-        for (int i = 1; i <= 5; i++) {
-//            sets = new int[i*2][i*2][1];
+        BigInteger before = BigInteger.ZERO;
+        for (int i = 1; i <= 9; i++) {
             BigInteger t = walk(0, 0 , i*2, i);
-            System.out.println("n=" + i + " Moegliche Pfade: " + t);
+//            System.out.println("n=" + i + " : " + t.add(before));
+            System.out.println("n=" + i + " : " + t);
+            before = t;
         }
     }
 
@@ -48,7 +51,7 @@ public class Main extends JFrame {
         if (x > n) {
             return BigInteger.ZERO;
         }
-        if (y > n + (n * 2.0)) {
+        if (step < (n - y)) {
             return BigInteger.ZERO;
         }
         step--;
@@ -135,18 +138,8 @@ public class Main extends JFrame {
     @Override
     public void paint(Graphics g) {
         super.paint(g);  // fixes the immediate problem.
-//
+
         Graphics2D g2 = (Graphics2D) g;
-//
-//        for(int i = 1; i <= success.size(); i++) {
-//            if (success.get(i - 1) == null) {
-//                Line2D lin = new Line2D.Float(i * step, 250, i * step, 275);
-//                g2.draw(lin);
-//            }else {
-//                Line2D lin = new Line2D.Float(i * step, 250, i * step , 350);
-//                g2.draw(lin);
-//            }
-//        }
         int right = 0;
 
         for(int p = 0; p < success.size(); p++) {
@@ -165,7 +158,7 @@ public class Main extends JFrame {
                 int offsetY = y;
 
                 for (int j = 0; j < w.length; j++) {
-                    Line2D lin = null;
+                    Line2D lin;
                     switch (w[j]) {
                         case RIGHT:
                             offsetX += step;
