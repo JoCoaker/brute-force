@@ -5,7 +5,6 @@ import java.awt.*;
 import java.awt.geom.Line2D;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Main extends JFrame {
 
@@ -27,10 +26,11 @@ public class Main extends JFrame {
 //        setSize(1000, 500);
 //        setVisible(true);
 //        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+//
+//        goThrough(2);
 
         BigInteger before = BigInteger.ZERO;
-        for (int i = 1; i <= 11; i++) {
+        for (int i = 10; i <= 15; i++) {
             BigInteger t = walk(0, 0 , i*2, i);
 //            System.out.println("n=" + i + " : " + t.add(before));
             System.out.println("n=" + i + " : " + t);
@@ -65,33 +65,32 @@ public class Main extends JFrame {
                 .add(walk(x - 1, y + 1, step, n));
     }
 
-    public boolean check(int x, int y, int step, int n) {
-        if (x > 0) {
-            step -= x;
-            y += x;
-        }
-
-        while (y > n) {
-            step--;
-            y--;
-        }
-        while (y < n) {
-            step--;
-            y++;
-        }
-        if ((step%2==0 || step%3==0) && step >= 0) {
-            return true;
-
-        }
-        return false;
-    }
+//    public boolean check(int x, int y, int step, int n) {
+//        if (x > 0) {
+//            step -= x;
+//            y += x;
+//        }
+//
+//        while (y > n) {
+//            step--;
+//            y--;
+//        }
+//        while (y < n) {
+//            step--;
+//            y++;
+//        }
+//        if ((step%2==0 || step%3==0) && step >= 0) {
+//            return true;
+//
+//        }
+//        return false;
+//    }
 
     public void goThrough(int n) {
         ArrayList<Ways[]> success = new ArrayList<>();
-        BigInteger posibilitys = new BigInteger("4");
-        posibilitys = posibilitys.pow(2 * n);
-        //BigInteger posibilitys = new BigInteger(Math.BigInteger.pow(4, (2*n)));
-//        System.out.println(posibilitys.longValue());
+        int t = (int) Math.pow(4, 2*n);
+        BigInteger posibilitys = new BigInteger(String.valueOf(t));
+        System.out.println(posibilitys.longValue());
         Ways[] w = new Ways[2 * n];
 
         for (int i = 0; i < w.length; i++) {
@@ -169,11 +168,12 @@ public class Main extends JFrame {
         for(int p = 0; p < success.size(); p++) {
             int step =  (width - 10) / success.get(p).get(0).length;
 
-            int startX = step * success.get(0).get(0).length + 10 + right;
             int startY = 500;
 
             for (int i = 0; i < success.get(p).size(); i++) {
                 Ways[] w = success.get(p).get(i);
+
+                int startX = step * success.get(0).get(0).length + 10 + right;
 
                 int x = startX;
                 int y = startY;
@@ -203,6 +203,7 @@ public class Main extends JFrame {
                     x = offsetX;
                     y = offsetY;
                 }
+                right += width + 15;
             }
 
             right += width + 15;
