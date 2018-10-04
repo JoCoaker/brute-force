@@ -6,8 +6,12 @@ import java.awt.geom.Line2D;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
 
 public class Main extends JFrame {
+
+    private Map<List<Integer>, BigInteger> memo = new HashMap<>();
 
     ArrayList<ArrayList<Ways[]>> success = new ArrayList<>();
 
@@ -30,7 +34,8 @@ public class Main extends JFrame {
 
 
         BigInteger before = BigInteger.ZERO;
-        for (int i = 1; i <= 11; i++) {
+        for (int i = 0; i <= 300; i++) {
+            memo = new HashMap<>();
             BigInteger t = walk(0, 0 , i*2, i);
 //            System.out.println("n=" + i + " : " + t.add(before));
             System.out.println("n=" + i + " : " + t);
@@ -42,6 +47,7 @@ public class Main extends JFrame {
         if (x < 0 || y < 0) {
             return BigInteger.ZERO;
         }
+
         if (step == 0) {
             if(x == 0 && y == n) {
                 return BigInteger.ONE;
@@ -51,18 +57,36 @@ public class Main extends JFrame {
         if (x > n) {
             return BigInteger.ZERO;
         }
-        if (step < (n - y)) {
-            return BigInteger.ZERO;
-        }
-//        if (!check(x, y, step, n)) {
+//        if (step < (n - y)) {
 //            return BigInteger.ZERO;
 //        }
-        step--;
+//        if (step < x) {
+//            return BigInteger.ZERO;
+//        }
+        if (!check(x, y, step, n)) {
+            return BigInteger.ZERO;
+        }
 
-        return walk(x + 1, y, step, n)
+
+        step--;
+        List<Integer> werte = new ArrayList<Integer>();
+        werte.add(x);
+        werte.add(y);
+        werte.add(step);
+        werte.add(n);
+
+        if (memo.containsKey(werte)) {
+            return memo.get(werte);
+        }
+
+        BigInteger result =  walk(x + 1, y, step, n)
                 .add(walk(x, y + 1, step, n))
                 .add(walk(x, y - 1, step, n))
                 .add(walk(x - 1, y + 1, step, n));
+
+        memo.put(werte, result);
+
+        return result;
     }
 
     public boolean check(int x, int y, int step, int n) {
@@ -79,9 +103,11 @@ public class Main extends JFrame {
             step--;
             y++;
         }
-        if ((step%2==0 || step%3==0) && step >= 0) {
+        while(step>3){
+            step-=2;
+        }
+        if (step >= 0) {
             return true;
-
         }
         return false;
     }
