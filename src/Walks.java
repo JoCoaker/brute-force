@@ -1,38 +1,36 @@
-package seb.algo.rithmen;
-
-import javax.swing.*;
-import java.awt.geom.Point2D;
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Walks extends JFrame {
+public class Walks {
 
-  private Map<String, BigInteger> memory;
+  Map<String, BigInteger> memory;
 
   private enum Direction {
-    RIGHT,
-    UP,
-    UP_LEFT,
-    DOWN_RIGHT,
-    UP_RIGHT,
-    DEFAULT,
+    RIGHT,      // →
+    UP,         // ↑
+    UP_LEFT,    // ↖
+    DOWN_RIGHT, // ↘
+    UP_RIGHT,   // ↗
+    DEFAULT,    // Tu nichts (Fuer den Start)
   }
 
+  /**
+   * Kontruktor Walks
+   */
   public Walks() {
+    // Gehe von 0 bis 20 ...
     for (int n = 0; n <= 20; n++) {
       memory = new HashMap<>();
-      BigInteger t = walk(n, 0, 0, Direction.DEFAULT);
-      System.out.println("(" + n + ", " + t + ")");
+      print(n, walk(n,0, 0, Direction.DEFAULT)); // Starte das durch "laufen" & drucke & starte von vorne.
     }
     memory = new HashMap<>();
-    int n = 500;
-    BigInteger t = walk(n, 0, 0, Direction.DEFAULT);
-    System.out.println("(" + n + ", " + t + ")");
+    int n = 950;
+    print(n, walk(n,0, 0, Direction.DEFAULT));
   }
 
-  public BigInteger walk(int n, int x, int y, Direction d) {
+
+  private BigInteger walk(int n, int x, int y, Direction d) {
     if (x < 0 || y < 0 || x > n || y > n || n - x - y < 0) {
       return BigInteger.ZERO;
     }
@@ -86,6 +84,9 @@ public class Walks extends JFrame {
     return result;
   }
 
+  private void print (int n, BigInteger paths) {
+    System.out.println("(" + n + ", " + paths + ")");
+  }
 
   public static void main(String[] args) {
     new Walks();
