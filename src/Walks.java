@@ -22,29 +22,40 @@ public class Walks {
     // Gehe von 0 bis 20 ...
     for (int n = 0; n <= 20; n++) {
       memory = new HashMap<>();
-      print(n, walk(n,0, 0, Direction.DEFAULT)); // Starte das durch "laufen" & drucke & starte von vorne.
+      print(n, walk(n, 0, 0, Direction.DEFAULT)); // Starte das durch "laufen" & drucke & starte von vorne.
     }
     memory = new HashMap<>();
-    int n = 950;
-    print(n, walk(n,0, 0, Direction.DEFAULT));
+    int n = 50;
+    print(n, walk(n, 0, 0, Direction.DEFAULT));
   }
 
-
+  /**
+   * Rekurive funktion fuer das laufen.
+   *
+   * @param n int
+   * @param x int
+   * @param y int
+   * @param d Direction
+   * @return BigInteger
+   */
   private BigInteger walk(int n, int x, int y, Direction d) {
+    // Ueberfluessige koennen von anfang an nicht beachtet werden.
     if (x < 0 || y < 0 || x > n || y > n || n - x - y < 0) {
       return BigInteger.ZERO;
     }
+    // Ueberpruefen ob man am ziel angekommen ist.
     if (x == n && y == 0) {
       return BigInteger.ONE;
     }
 
+    // Ueberpruefen ob der Wert schon im cache liegt. (D.P.)
     String compare = x + "|" + y + "|" + d + "|" + n;
-
     if (memory.containsKey(compare)) {
       return memory.get(compare);
     }
-    BigInteger result;
 
+    BigInteger result;
+    // Einschraenkungen beachten und rekursiv weiter laufen.
     switch (d) {
       case UP:
         result = walk(n, x - 1, y + 1, Direction.DOWN_RIGHT)
@@ -78,17 +89,28 @@ public class Walks {
             .add(walk(n, x + 1, y + 1, Direction.UP_RIGHT));
         break;
     }
-
+    // Ergebnis im cache speichern. (D.P.)
     memory.put(compare, result);
 
     return result;
   }
 
-  private void print (int n, BigInteger paths) {
+  /**
+   * Ausdrucken in der Konsole.
+   *
+   * @param n     int
+   * @param paths BigInteger
+   */
+  private void print(int n, BigInteger paths) {
     System.out.println("(" + n + ", " + paths + ")");
   }
 
+  /**
+   *  main Methode.
+   *
+   * @param args String[]
+   */
   public static void main(String[] args) {
-    new Walks();
+    new Walks(); // Neues Objekt erzeugen.
   }
 }
