@@ -2,6 +2,13 @@ import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Algorithmen Übung 2.
+ *
+ * @author Tobias Müller              193683
+ * @author Peter Tim Oliver Nauroth   198322
+ * @author Lukas Reichert             199034
+ */
 public class Walks {
 
   Map<String, BigInteger> memory;
