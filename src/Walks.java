@@ -1,9 +1,10 @@
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 /**
- * Algorithmen Übung 2.
+ * Algorithmen Uebung 2.
  *
  * @author Tobias Müller              193683
  * @author Peter Tim Oliver Nauroth   198322
@@ -11,7 +12,8 @@ import java.util.Map;
  */
 public class Walks {
 
-  Map<String, BigInteger> memory;
+  private Map<String, BigInteger[]> memory;
+  private BigInteger steps;
 
   private enum Direction {
     RIGHT,      // →
@@ -22,18 +24,30 @@ public class Walks {
     DEFAULT,    // Tu nichts (Fuer den Start)
   }
 
-  /**
-   * Kontruktor Walks
-   */
   public Walks() {
-    // Gehe von 0 bis 20 ...
-    for (int n = 0; n <= 20; n++) {
-      memory = new HashMap<>();
-      print(n, walk(n, 0, 0, Direction.DEFAULT)); // Starte das durch "laufen" & drucke & starte von vorne.
+    Scanner s = new Scanner(System.in);
+
+    System.out.println("Bitte geben Sie Ihr Betrag ein: (Zum beenden \"hguone\" eingeben)");
+    while (true) {
+      String input;
+      try {
+        input = s.nextLine();
+
+        if (input.equals("hguone")) {
+          System.out.println("bye");
+          return;
+        }
+        int n = Integer.parseInt(input);
+
+        memory = new HashMap<>();
+        this.steps = BigInteger.ZERO;
+
+        System.out.println("(" + n + ", " + walk(n, 0, 0, Direction.DEFAULT, BigInteger.ONE) + ")");
+        System.out.println("Steps: " + this.steps);
+      } catch (Exception e) {
+        System.out.println("Unguelitige Eingabe!");
+      }
     }
-    memory = new HashMap<>();
-    int n = 50;
-    print(n, walk(n, 0, 0, Direction.DEFAULT));
   }
 
   /**
@@ -45,59 +59,65 @@ public class Walks {
    * @param d Direction
    * @return BigInteger
    */
-  private BigInteger walk(int n, int x, int y, Direction d) {
+  private BigInteger walk(int n, int x, int y, Direction d, BigInteger steps) {
     // Ueberfluessige koennen von anfang an nicht beachtet werden.
     if (x < 0 || y < 0 || x > n || y > n || n - x - y < 0) {
       return BigInteger.ZERO;
     }
     // Ueberpruefen ob man am ziel angekommen ist.
     if (x == n && y == 0) {
+      this.steps = this.steps.add(steps);
       return BigInteger.ONE;
     }
 
     // Ueberpruefen ob der Wert schon im cache liegt. (D.P.)
     String compare = x + "|" + y + "|" + d + "|" + n;
-    if (memory.containsKey(compare)) {
-      return memory.get(compare);
-    }
+//    if (memory.containsKey(compare)) {
+//      BigInteger[] mem = memory.get(compare);
+//      this.steps = this.steps.add(mem[1]);
+//      return mem[0];
+//    }
 
     BigInteger result;
+
+    steps = steps.add(BigInteger.ONE);
+
     // Einschraenkungen beachten und rekursiv weiter laufen.
     switch (d) {
       case UP:
-        result = walk(n, x - 1, y + 1, Direction.DOWN_RIGHT)
-            .add(walk(n, x, y + 1, Direction.UP))
-            .add(walk(n, x + 1, y - 1, Direction.UP_LEFT));
+        result = walk(n, x - 1, y + 1, Direction.DOWN_RIGHT, steps)
+            .add(walk(n, x, y + 1, Direction.UP, steps))
+            .add(walk(n, x + 1, y - 1, Direction.UP_LEFT, steps));
         break;
       case UP_LEFT:
-        result = walk(n, x + 1, y - 1, Direction.UP_LEFT)
-            .add(walk(n, x + 1, y, Direction.RIGHT))
-            .add(walk(n, x, y + 1, Direction.UP))
-            .add(walk(n, x + 1, y + 1, Direction.UP_RIGHT));
+        result = walk(n, x + 1, y - 1, Direction.UP_LEFT, steps)
+            .add(walk(n, x + 1, y, Direction.RIGHT, steps))
+            .add(walk(n, x, y + 1, Direction.UP, steps))
+            .add(walk(n, x + 1, y + 1, Direction.UP_RIGHT, steps));
         break;
       case RIGHT:
       case UP_RIGHT:
-        result = walk(n, x + 1, y - 1, Direction.UP_LEFT)
-            .add(walk(n, x + 1, y, Direction.RIGHT))
-            .add(walk(n, x - 1, y + 1, Direction.DOWN_RIGHT))
-            .add(walk(n, x + 1, y + 1, Direction.UP_RIGHT));
+        result = walk(n, x + 1, y - 1, Direction.UP_LEFT, steps)
+            .add(walk(n, x + 1, y, Direction.RIGHT, steps))
+            .add(walk(n, x - 1, y + 1, Direction.DOWN_RIGHT, steps))
+            .add(walk(n, x + 1, y + 1, Direction.UP_RIGHT, steps));
         break;
       case DOWN_RIGHT:
-        result = walk(n, x - 1, y + 1, Direction.DOWN_RIGHT)
-            .add(walk(n, x + 1, y, Direction.RIGHT))
-            .add(walk(n, x, y + 1, Direction.UP))
-            .add(walk(n, x + 1, y + 1, Direction.UP_RIGHT));
+        result = walk(n, x - 1, y + 1, Direction.DOWN_RIGHT, steps)
+            .add(walk(n, x + 1, y, Direction.RIGHT, steps))
+            .add(walk(n, x, y + 1, Direction.UP, steps))
+            .add(walk(n, x + 1, y + 1, Direction.UP_RIGHT, steps));
         break;
       default:
-        result = walk(n, x + 1, y - 1, Direction.UP_LEFT)
-            .add(walk(n, x + 1, y, Direction.RIGHT))
-            .add(walk(n, x, y + 1, Direction.UP))
-            .add(walk(n, x - 1, y + 1, Direction.DOWN_RIGHT))
-            .add(walk(n, x + 1, y + 1, Direction.UP_RIGHT));
+        result = walk(n, x + 1, y - 1, Direction.UP_LEFT, steps)
+            .add(walk(n, x + 1, y, Direction.RIGHT, steps))
+            .add(walk(n, x, y + 1, Direction.UP, steps))
+            .add(walk(n, x - 1, y + 1, Direction.DOWN_RIGHT, steps))
+            .add(walk(n, x + 1, y + 1, Direction.UP_RIGHT, steps));
         break;
     }
     // Ergebnis im cache speichern. (D.P.)
-    memory.put(compare, result);
+//    memory.put(compare, new BigInteger[] {result, steps});
 
     return result;
   }
@@ -113,7 +133,7 @@ public class Walks {
   }
 
   /**
-   *  main Methode.
+   * main Methode.
    *
    * @param args String[]
    */
