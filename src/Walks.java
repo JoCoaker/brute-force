@@ -117,7 +117,7 @@ public class Walks {
         break;
     }
     // Ergebnis im cache speichern. (D.P.)
-//    memory.put(compare, new BigInteger[] {result, steps});
+    memory.put(compare, new BigInteger[] {result, steps});
 
     return result;
   }
