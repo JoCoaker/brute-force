@@ -1,11 +1,11 @@
 import java.util.ArrayList;
-        import java.util.Collections;
-        import java.util.Comparator;
-        import java.util.List;
-        import java.util.Scanner;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Scanner;
 
 public class PermOneThree {
-  static List<String> data;
+  static List<List<Integer>> data;
 
   public static void main(String[] args) {
     data = new ArrayList<>();
@@ -14,48 +14,80 @@ public class PermOneThree {
 
     System.out.print("Bitte geben Sie N ein: ");
     n = input.nextInt();
-    startPermute(n);
+    newstartPermute(n);
 
 
 
     //Collections.sort(data);
 
+    Collections.sort(data,
+            (o1, o2) ->{
 
+              for(int i = 0; i < o1.size(); i++) {
+                if(o1.get(i)>o2.get(i)) {
+                  return 1;
+                }else if(o1.get(i)<o2.get(i)) {
+                  return -1;
+                }
+
+              }
+              return 0; //Passiert in dem fall nie but w/e
+            });
 
     data.forEach(t -> System.out.println(t));
     System.out.println("Es gab genau "+ data.size() +" Permutationen der verlangten Art.");
   }
 
-  private static void startPermute(int n) {
-    List<Integer> test = new ArrayList<>();
-
-    for(int i = 1;i<=n;i++) {
+  private static void newstartPermute(int n) {
+    for(int i =1 ; i<=n;i++) {
+      List<Integer> test = new ArrayList<>();
       test.add(i);
+      newPermute(test,n);
     }
-    permute(test,0,test.size()-1);
+
+
+
   }
 
+  private static void newPermute(List<Integer> list2 ,int n) {
+    List<Integer> list=new ArrayList<>();
+    list.addAll(list2);
+    if(list.size()==n) {
+      data.add(list);
+    }else {
 
-  private static void permute(List<Integer> list, int left, int right) {
-    if (left == right) {
-      boolean fits = true;
-      for(int i = 0;i<list.size()-1;i++) {
-        int temp1 = list.get(i);
-        int temp2 = list.get(i+1);
-        if((temp1-temp2)!=1&&(temp1-temp2)!=-1&&(temp1-temp2)!=4&&(temp1-temp2)!=-4) {
-          fits = false;
+      if(!list.contains(list.get(list.size()-1)-4)&&list.get(list.size()-1)-4>0) {
+        List<Integer> templist = new ArrayList<>();
+        templist.addAll(list);
+        templist.add(list.get(list.size()-1)-4);
+        newPermute(templist,n);
+      }
 
-        }
+      if(!list.contains(list.get(list.size()-1)+1)&&list.get(list.size()-1)+1<=n) {
+        List<Integer> templist = new ArrayList<>();
+        templist.addAll(list);
+        templist.add(list.get(list.size()-1)+1);
+        newPermute(templist,n);
       }
-      if(fits) {
-        data.add(list.toString());
+
+
+      if(!list.contains(list.get(list.size()-1)+4)&&list.get(list.size()-1)+4<=n) {
+        List<Integer> templist = new ArrayList<>();
+        templist.addAll(list);
+        templist.add(list.get(list.size()-1)+4);
+        newPermute(templist,n);
       }
-    }else{
-      for (int i = left; i <= right; i++) {
-        Collections.swap(list, left, i);
-        permute(list, left+1, right);
-        Collections.swap(list, left, i);
+
+      if(!list.contains(list.get(list.size()-1)-1)&&list.get(list.size()-1)-1>0) {
+        List<Integer> templist = new ArrayList<>();
+        templist.addAll(list);
+        templist.add(list.get(list.size()-1)-1);
+        newPermute(templist,n);
       }
+
+
     }
+
   }
+
 }
