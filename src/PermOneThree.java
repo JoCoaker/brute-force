@@ -37,7 +37,7 @@ public class PermOneThree {
 
 
   private static void permute(List<Integer> list, int left, int right) {
-    if (left == r) {
+    if (left == right) {
       boolean fits = true;
       for(int i = 0;i<list.size()-1;i++) {
         int temp1 = list.get(i);
@@ -51,9 +51,9 @@ public class PermOneThree {
         data.add(list.toString());
       }
     }else{
-      for (int i = left; i <= r; i++) {
+      for (int i = left; i <= right; i++) {
         Collections.swap(list, left, i);
-        permute(list, left+1, r);
+        permute(list, left+1, right);
         Collections.swap(list, left, i);
       }
     }
