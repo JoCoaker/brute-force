@@ -117,7 +117,7 @@ public class Walks {
         break;
     }
     // Ergebnis im cache speichern. (D.P.)
-    memory.put(compare, new BigInteger[] {result, steps});
+    memory.put(compare, new BigInteger[]{result, steps});
 
     return result;
   }
@@ -138,6 +138,22 @@ public class Walks {
    * @param args String[]
    */
   public static void main(String[] args) {
-    new Walks(); // Neues Objekt erzeugen.
+//    new Walks(); // Neues Objekt erzeugen.
+    Zahl x = new Zahl(4);
+    x.wert = 3;
+    setze(x);
+    System.out.println("Wert: " + x.wert);
+  }
+
+  static void setze(Zahl x) {
+    x.wert = 44;
+  }
+
+  static class Zahl {
+    public int wert;
+
+    public Zahl(int x) {
+      wert = x;
+    }
   }
 }
