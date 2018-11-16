@@ -1,17 +1,20 @@
-import java.math.BigInteger;
 import java.util.*;
 
+/**
+ * Algorithmen Uebung 6.
+ *
+ * @author Tobias Müller              193683
+ * @author Peter Tim Oliver Nauroth   198322
+ * @author Lukas Reichert             199034
+ */
 public class DLXPentominoDTXY {
-
-  private DLXNode h;
 
   private int n;
   private int columns = 6;
 
+  private DLXNode h;
   private int cnt;
-
   private HashMap<String, int[][]> shapes;
-
   private List<int[]> coverageList;
 
   /**
@@ -40,8 +43,6 @@ public class DLXPentominoDTXY {
         // Zu int konvertieren.
         n = Integer.parseInt(input);
 
-        System.out.println("n:" + n);
-
         // Objekte zuruecksetzten.
         coverageList = new ArrayList<>();
         cnt = 0;
@@ -60,7 +61,7 @@ public class DLXPentominoDTXY {
         search(0);
 
         // Anzahl der Moeglichkeiten anzeigen.
-        System.out.println("Möglichkeiten: " + cnt);
+        System.out.println("a(" + n + ") = " + cnt);
         System.out.println();
 
       } catch (Exception e) {
@@ -106,13 +107,13 @@ public class DLXPentominoDTXY {
         shapes.put(MatOp.toString(mat), mat);
       }
       int[][] temp = mat;
-      for (int j = 0; j< 3; j++) {
+      for (int j = 0; j < 3; j++) {
         // Matrix rotieren.
         temp = MatOp.rotate(temp);
         // Hinzufuegen falls nicht vorhanden.
         if (!shapes.containsKey(MatOp.toString(temp))) {
           shapes.put(MatOp.toString(temp), temp);
-        }else if (i == 1) {
+        } else if (i == 1) {
           // Falls das gespiegelt schon darin ist sind alle rotationen auch schon darin
           // deswegen kann man es abbrechnen.
           break;
@@ -185,7 +186,7 @@ public class DLXPentominoDTXY {
     h = new DLXNode();
 
     // Spalten header zwischen speichern.
-    DLXNode[] headers  = new DLXNode[columns *n];
+    DLXNode[] headers = new DLXNode[columns * n];
 
     // Durch jede Zeile gehen.
     for (int r = 0; r < coverageMat.length; r++) {
@@ -214,7 +215,9 @@ public class DLXPentominoDTXY {
           DLXNode n = new DLXNode();
           // Ueberpruefen ob es schon ein Zeilen anfang gibt,
           // falls nicht ist dieser jetzt der Zeilen anfang.
-          if (rowN == null) { rowN = n; }
+          if (rowN == null) {
+            rowN = n;
+          }
 
           // Links setzten.
           n.C = headers[c];
