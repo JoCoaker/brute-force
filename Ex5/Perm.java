@@ -68,7 +68,7 @@ class Perm extends Thread {
   } // end put
 
   public static void main(String[] arg) {
-    for (int j = 1; j < 16; j++) {
+    for (int j = 1; j < 4; j++) {
 
       result = new ArrayList<>();
       Perm t = new Perm(j);
