@@ -12,7 +12,11 @@ public class DKnV {
   private List<Integer[]> results = new ArrayList<>();
 
   public DKnV() {
-    int n = ;
+    int n = 3;
+
+    double t = recursiv(n);
+
+    System.out.println("" + Math.floor(Math.floor(t) / Main.faculty(n)));
 
     List<Integer> array = new ArrayList<>();
 
@@ -32,13 +36,14 @@ public class DKnV {
     }
 
     System.out.println("Total swaps: " + countTotalSwaps);
+    System.out.println("Total swaps: " + t);
     System.out.println("Swaps: " + Arrays.toString(cacheSwaps.toArray()));
 
     System.out.println("Average: " + (countTotalSwaps / cacheSwaps.size()));
   }
 
-  private int recursiv(int n) {
-    return n == 0 ? 0 : recursiv(n-1) * n + (n-1)
+  private double recursiv(double n) {
+    return n == 0 ? 0 : (recursiv(n-1) * n + Main.faculty((int) n-1) * (Math.pow(2, n-1) -1));
   }
 
   private Integer[] sort(Integer[] array) {
