@@ -1,9 +1,10 @@
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class MoneyPayoutOptions {
   // Indices 0 1 2 3 4 5 6 7
-  private int betrag[] = {2, 3, 5, 5, 11};
+  private int betrag[] = {3, 3, 5, 8};
 
   private int n = betrag.length; // Anzahl Muenzen
   // # Wechselarten fuer Betrag g und Muenzen mit Indices <= i
@@ -24,44 +25,50 @@ public class MoneyPayoutOptions {
     Scanner s = new Scanner(System.in);
 
     String input = "";
-
-    for (int i = 0; i <= 13; i++) {
-      int g = (int) Math.pow(5, i);
-//      w = new long[g + 1][n]; // w dimensionieren
-//      System.out.println("Den Betrag " + g + " (5^" + i + ") kann man auf " +
-//          w(g, n - 1) + " verschiedene Arten wecheln. (HEINZ)");
-      int size = (g + 1);
-//      if (i > 0) {
-////        size = size / i;
-////      }
-////      if (size < 1000) {
-////        size = g + 1;
-////      }
-      if (size > 1000000) {
-        size = 1000000;
-      }
-      table = new BigInteger[size][betrag.length]; // w dimensionieren
-      System.out.println("Den Betrag " + g + " (5^" + i + ") kann man auf " +
-          calcOptions(g, betrag.length) + " verschiedene Arten auszahlen.");
-    }
-//    while (true) {
-//      System.out.println("Bitte geben Sie Ihr Betrag ein: (Zum beenden \"hguone\" eingeben)");
-//      try {
-//        input = s.nextLine();
 //
-//        if (input.equals("hguone")) {
-//          System.out.println("bye");
-//          return;
-//        }
-//
-//        int g = Integer.parseInt(input); // g lesen
-//        w = new long[g + 1][n]; // w dimensionieren
-//        System.out.println("Den Betrag " + g + " kann man auf " +
-//            w(g, n - 1) + " verschiedene Arten wecheln.");
-//      } catch (Exception e) {
-//        System.out.println("Unguelitige Eingabe!");
+//    for (int i = 0; i <= 13; i++) {
+//      int g = (int) Math.pow(5, i);
+////      w = new long[g + 1][n]; // w dimensionieren
+////      System.out.println("Den Betrag " + g + " (5^" + i + ") kann man auf " +
+////          w(g, n - 1) + " verschiedene Arten wecheln. (HEINZ)");
+//      int size = (g + 1);
+////      if (i > 0) {
+//////        size = size / i;
+//////      }
+//////      if (size < 1000) {
+//////        size = g + 1;
+//////      }
+//      if (size > 1000000) {
+//        size = 1000000;
 //      }
+//      table = new BigInteger[size][betrag.length]; // w dimensionieren
+//      System.out.println("Den Betrag " + g + " (5^" + i + ") kann man auf " +
+//          calcOptions(g, betrag.length) + " verschiedene Arten auszahlen.");
 //    }
+    while (true) {
+      System.out.println("Bitte geben Sie Ihr Betrag ein: (Zum beenden \"hguone\" eingeben)");
+      try {
+        input = s.nextLine();
+
+        if (input.equals("hguone")) {
+          System.out.println("bye");
+          return;
+        }
+
+        int g = Integer.parseInt(input); // g lesen
+        w = new long[g + 1][n]; // w dimensionieren
+        System.out.println("Den Betrag " + g + " kann man auf " +
+            w(g, n - 1) + " verschiedene Arten wecheln.");
+
+        for (long[] a :
+                w) {
+
+          System.out.println(Arrays.toString(a));
+        }
+      } catch (Exception e) {
+        System.out.println("Unguelitige Eingabe!");
+      }
+    }
   }
 
   private long w(int g, int i) { // Methode
